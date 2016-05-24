@@ -18,6 +18,8 @@
  */
 
 /* This file keeps definitions for code elements which are part of the low-level features of the trainer. */
+using RAMvader.CodeInjection;
+
 namespace RAMvader_Trine_EnchantedEdition
 {
 	/// <summary>Identifiers for all cheats available in the trainer.</summary>
@@ -41,6 +43,9 @@ namespace RAMvader_Trine_EnchantedEdition
 	/// once the trainer gets attached to the game.</summary>
 	public enum ECodeCave
 	{
+		/// <summary>Identifies the code cave used for the "HP Hack" cheat.</summary>
+		[CodeCaveDefinition( 0x50, 0x31, 0xC0, 0xB0, 0xC8, 0x89, 0x86, 0x60, 0x01, 0x00, 0x00, 0x8B, 0x96, 0x60, 0x01, 0x00, 0x00, 0x58, 0xC3 )]
+		evCodeCaveHPHack,
 	}
 
 
