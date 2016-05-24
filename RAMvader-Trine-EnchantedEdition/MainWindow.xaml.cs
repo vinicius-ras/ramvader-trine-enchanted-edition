@@ -52,6 +52,9 @@ namespace RAMvader_Trine_EnchantedEdition
 		private Timer m_gameSearchTimer = null;
 		/// <summary>A set containing all the cheats the user has enabled in the trainer.</summary>
 		private HashSet<ECheat> m_enabledCheats = new HashSet<ECheat>();
+		/// <summary>A memory alteration which is enabled when the trainer is attached to the game to keep track of the address of the player's
+		/// current character's HP variable.</summary>
+		private MemoryAlterationX86Call m_memAlterationStorePlayerHPAddress;
 		#endregion
 
 
@@ -103,6 +106,21 @@ namespace RAMvader_Trine_EnchantedEdition
 
 							GameMemoryInjector.AddMemoryAlteration( ECheat.evCheatHPHack, new MemoryAlterationX86Call( GameMemoryIO, mainModuleAddress + 0x5866B, ECodeCave.evCodeCaveHPHack, 6 ) );
 
+							GameMemoryInjector.AddMemoryAlteration( ECheat.evCheatManaHack, new MemoryAlterationX86Call( GameMemoryIO, mainModuleAddress + 0x11B61E8, ECodeCave.evCodeCaveManaHack, 6 ) );
+
+							GameMemoryInjector.AddMemoryAlteration( ECheat.evCheatSkillPointsHack, new MemoryAlterationX86Call( GameMemoryIO, mainModuleAddress + 0x14D60, ECodeCave.evCodeCaveSkillPointsHack1, 6 ) );
+							GameMemoryInjector.AddMemoryAlteration( ECheat.evCheatSkillPointsHack, new MemoryAlterationX86Call( GameMemoryIO, mainModuleAddress + 0x14E90, ECodeCave.evCodeCaveSkillPointsHack2, 6 ) );
+							GameMemoryInjector.AddMemoryAlteration( ECheat.evCheatSkillPointsHack, new MemoryAlterationX86Call( GameMemoryIO, mainModuleAddress + 0x14FC0, ECodeCave.evCodeCaveSkillPointsHack3, 6 ) );
+							GameMemoryInjector.AddMemoryAlteration( ECheat.evCheatSkillPointsHack, new MemoryAlterationNOP( GameMemoryIO, mainModuleAddress + 0x14C46, 6 ) );
+							GameMemoryInjector.AddMemoryAlteration( ECheat.evCheatSkillPointsHack, new MemoryAlterationNOP( GameMemoryIO, mainModuleAddress + 0x14D76, 6 ) );
+							GameMemoryInjector.AddMemoryAlteration( ECheat.evCheatSkillPointsHack, new MemoryAlterationNOP( GameMemoryIO, mainModuleAddress + 0x14EA6, 6 ) );
+
+							GameMemoryInjector.AddMemoryAlteration( ECheat.evCheatOneHitKillsHack, new MemoryAlterationX86Call( GameMemoryIO, mainModuleAddress + 0x5A22E4, ECodeCave.evCodeCaveOneHitKills, 6 ) );
+
+							// Enable the code cave that keeps track of the address of the player's current character's HP variable
+							m_memAlterationStorePlayerHPAddress = new MemoryAlterationX86Call( GameMemoryIO, mainModuleAddress + 0x117A80E, ECodeCave.evCodeCaveStorePtrCharHP, 6 );
+							m_memAlterationStorePlayerHPAddress.SetEnabled( GameMemoryInjector, true );
+
 							// Enable the cheats that the user has checked in the trainer's interface
 							foreach ( ECheat curEnabledCheat in m_enabledCheats )
 								GameMemoryInjector.SetMemoryAlterationsActive( curEnabledCheat, true );
@@ -141,6 +159,9 @@ namespace RAMvader_Trine_EnchantedEdition
 					foreach ( ECheat curCheat in Enum.GetValues( typeof( ECheat ) ) )
 						GameMemoryInjector.SetMemoryAlterationsActive( curCheat, false );
 				}
+
+				m_memAlterationStorePlayerHPAddress.SetEnabled( GameMemoryInjector, false );
+				m_memAlterationStorePlayerHPAddress = null;
 
 				// Release injected memory, cleanup and detach
 				GameMemoryInjector.ResetAllocatedMemoryData();
