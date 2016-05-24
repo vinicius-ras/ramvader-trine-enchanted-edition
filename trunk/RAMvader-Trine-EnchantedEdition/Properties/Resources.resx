@@ -117,16 +117,70 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="strChkCheatDescriptionHPHack" xml:space="preserve">
+    <value>player's characters' HP do not decrease when they get hit by enemies.</value>
+  </data>
+  <data name="strChkCheatDescriptionManaHack" xml:space="preserve">
+    <value>player's characters' MANA do not decrease while using their powers and special moves.</value>
+  </data>
+  <data name="strChkCheatDescriptionOneHitKillsHack" xml:space="preserve">
+    <value>kill any enemy with a single hit!</value>
+  </data>
+  <data name="strChkCheatDescriptionSkillPointsHack" xml:space="preserve">
+    <value>have infinite Skill Points to use whenever you open the Skills menu.</value>
+  </data>
+  <data name="strChkCheatPromptHPHack" xml:space="preserve">
+    <value>HP Hack:</value>
+  </data>
+  <data name="strChkCheatPromptManaHack" xml:space="preserve">
+    <value>MANA hack:</value>
+  </data>
+  <data name="strChkCheatPromptOneHitKillsHack" xml:space="preserve">
+    <value>One Hit Kills:</value>
+  </data>
+  <data name="strChkCheatPromptSkillPointsHack" xml:space="preserve">
+    <value>Infinite SKILL POINTS:</value>
+  </data>
+  <data name="strGroupBoxHeaderCheats" xml:space="preserve">
+    <value>Available hacks</value>
+  </data>
+  <data name="strGroupBoxHeaderGameInfo" xml:space="preserve">
+    <value>Game info</value>
+  </data>
   <data name="strGroupBoxHeaderSupport" xml:space="preserve">
     <value>Support us!</value>
   </data>
   <data name="strLblClickToDonate" xml:space="preserve">
     <value>(Click to donate via PayPal).</value>
   </data>
+  <data name="strLblGamesProcessPrompt" xml:space="preserve">
+    <value>Game's process:</value>
+  </data>
+  <data name="strLblNotAttached" xml:space="preserve">
+    <value>Game not detected... Please, run the game!</value>
+  </data>
+  <data name="strLblProcessIDPrompt" xml:space="preserve">
+    <value>PID:</value>
+  </data>
   <data name="strLblRequestForDonation" xml:space="preserve">
     <value>Please, consider supporting the developer!</value>
   </data>
+  <data name="strLblRequiredGameVersionPrompt" xml:space="preserve">
+    <value>Required game version:</value>
+  </data>
+  <data name="strLblRequiredGameVersionValue" xml:space="preserve">
+    <value>Enchanted Edition, v2.12, Build 510, Steam</value>
+  </data>
   <data name="strMainWindowTitle" xml:space="preserve">
     <value>RAMvader-Trine-EnchantedEdition by Vinicius.RAS</value>
+  </data>
+  <data name="strMsgFailedToAttach" xml:space="preserve">
+    <value>Failed to attach to the game's process!</value>
+  </data>
+  <data name="strMsgFailedToAttachCaption" xml:space="preserve">
+    <value>Failed to attach</value>
+  </data>
+  <data name="strNoneTag" xml:space="preserve">
+    <value>&lt;NONE&gt;</value>
   </data>
 </root>

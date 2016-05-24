@@ -61,6 +61,96 @@ namespace RAMvader_Trine_EnchantedEdition.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to player&apos;s characters&apos; HP do not decrease when they get hit by enemies..
+        /// </summary>
+        public static string strChkCheatDescriptionHPHack {
+            get {
+                return ResourceManager.GetString("strChkCheatDescriptionHPHack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to player&apos;s characters&apos; MANA do not decrease while using their powers and special moves..
+        /// </summary>
+        public static string strChkCheatDescriptionManaHack {
+            get {
+                return ResourceManager.GetString("strChkCheatDescriptionManaHack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to kill any enemy with a single hit!.
+        /// </summary>
+        public static string strChkCheatDescriptionOneHitKillsHack {
+            get {
+                return ResourceManager.GetString("strChkCheatDescriptionOneHitKillsHack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to have infinite Skill Points to use whenever you open the Skills menu..
+        /// </summary>
+        public static string strChkCheatDescriptionSkillPointsHack {
+            get {
+                return ResourceManager.GetString("strChkCheatDescriptionSkillPointsHack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HP Hack:.
+        /// </summary>
+        public static string strChkCheatPromptHPHack {
+            get {
+                return ResourceManager.GetString("strChkCheatPromptHPHack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MANA hack:.
+        /// </summary>
+        public static string strChkCheatPromptManaHack {
+            get {
+                return ResourceManager.GetString("strChkCheatPromptManaHack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to One Hit Kills:.
+        /// </summary>
+        public static string strChkCheatPromptOneHitKillsHack {
+            get {
+                return ResourceManager.GetString("strChkCheatPromptOneHitKillsHack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Infinite SKILL POINTS:.
+        /// </summary>
+        public static string strChkCheatPromptSkillPointsHack {
+            get {
+                return ResourceManager.GetString("strChkCheatPromptSkillPointsHack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Available hacks.
+        /// </summary>
+        public static string strGroupBoxHeaderCheats {
+            get {
+                return ResourceManager.GetString("strGroupBoxHeaderCheats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game info.
+        /// </summary>
+        public static string strGroupBoxHeaderGameInfo {
+            get {
+                return ResourceManager.GetString("strGroupBoxHeaderGameInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Support us!.
         /// </summary>
         public static string strGroupBoxHeaderSupport {
@@ -79,6 +169,33 @@ namespace RAMvader_Trine_EnchantedEdition.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Game&apos;s process:.
+        /// </summary>
+        public static string strLblGamesProcessPrompt {
+            get {
+                return ResourceManager.GetString("strLblGamesProcessPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game not detected... Please, run the game!.
+        /// </summary>
+        public static string strLblNotAttached {
+            get {
+                return ResourceManager.GetString("strLblNotAttached", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PID:.
+        /// </summary>
+        public static string strLblProcessIDPrompt {
+            get {
+                return ResourceManager.GetString("strLblProcessIDPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please, consider supporting the developer!.
         /// </summary>
         public static string strLblRequestForDonation {
@@ -88,11 +205,56 @@ namespace RAMvader_Trine_EnchantedEdition.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Required game version:.
+        /// </summary>
+        public static string strLblRequiredGameVersionPrompt {
+            get {
+                return ResourceManager.GetString("strLblRequiredGameVersionPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enchanted Edition, v2.12, Build 510, Steam.
+        /// </summary>
+        public static string strLblRequiredGameVersionValue {
+            get {
+                return ResourceManager.GetString("strLblRequiredGameVersionValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to RAMvader-Trine-EnchantedEdition by Vinicius.RAS.
         /// </summary>
         public static string strMainWindowTitle {
             get {
                 return ResourceManager.GetString("strMainWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to attach to the game&apos;s process!.
+        /// </summary>
+        public static string strMsgFailedToAttach {
+            get {
+                return ResourceManager.GetString("strMsgFailedToAttach", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to attach.
+        /// </summary>
+        public static string strMsgFailedToAttachCaption {
+            get {
+                return ResourceManager.GetString("strMsgFailedToAttachCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;NONE&gt;.
+        /// </summary>
+        public static string strNoneTag {
+            get {
+                return ResourceManager.GetString("strNoneTag", resourceCulture);
             }
         }
     }
