@@ -19,6 +19,7 @@
 using RAMvader;
 using RAMvader.CodeInjection;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -49,6 +50,8 @@ namespace RAMvader_Trine_EnchantedEdition
 		#region PRIVATE FIELDS
 		/// <summary>A Timer object used to periodically look for the game's process, when the trainer is not attached to the game.</summary>
 		private Timer m_gameSearchTimer = null;
+		/// <summary>A set containing all the cheats the user has enabled in the trainer.</summary>
+		private HashSet<ECheat> m_enabledCheats = new HashSet<ECheat>();
 		#endregion
 
 
@@ -94,6 +97,15 @@ namespace RAMvader_Trine_EnchantedEdition
 							GameMemoryIO.TargetProcess.Exited += ( caller, args ) => {
 								this.Dispatcher.Invoke( () => { this.DetachFromGame(); } );
 							};
+
+							// Build the cheat activation steps...
+							IntPtr mainModuleAddress = GameMemoryIO.TargetProcess.MainModule.BaseAddress;
+
+							GameMemoryInjector.AddMemoryAlteration( ECheat.evCheatHPHack, new MemoryAlterationX86Call( GameMemoryIO, mainModuleAddress + 0x5866B, ECodeCave.evCodeCaveHPHack, 6 ) );
+
+							// Enable the cheats that the user has checked in the trainer's interface
+							foreach ( ECheat curEnabledCheat in m_enabledCheats )
+								GameMemoryInjector.SetMemoryAlterationsActive( curEnabledCheat, true );
 
 							// The timer which looks for the game shouldn't be restarted, as the game has already been found
 							bRestartLookForGameTimer = false;
@@ -206,6 +218,20 @@ namespace RAMvader_Trine_EnchantedEdition
 		/// <param name="e">Arguments from the event.</param>
 		private void CheckBoxCheatToggled( object sender, RoutedEventArgs e )
 		{
+			// Retrieve information which will be used to enable or disable the cheat
+			CheckBox chkBox = (CheckBox) e.Source;
+			ECheat cheatID = (ECheat) chkBox.Tag;
+			bool bEnableCheat = ( chkBox.IsChecked == true );
+
+			// Update the list of cheats to be enabled
+			if ( bEnableCheat )
+				m_enabledCheats.Add( cheatID );
+			else
+				m_enabledCheats.Remove( cheatID );
+
+			// Enable or disable the cheat in the game's memory space
+			if ( GameMemoryIO.IsAttached() )
+				GameMemoryInjector.SetMemoryAlterationsActive( cheatID, bEnableCheat );
 		}
 		#endregion
 	}
