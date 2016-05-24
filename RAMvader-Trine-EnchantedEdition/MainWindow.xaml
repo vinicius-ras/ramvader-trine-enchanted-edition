@@ -24,9 +24,96 @@
         xmlns:local="clr-namespace:RAMvader_Trine_EnchantedEdition"
 		xmlns:props="clr-namespace:RAMvader_Trine_EnchantedEdition.Properties"
         mc:Ignorable="d"
-        Title="{x:Static props:Resources.strMainWindowTitle}" Height="350" Width="525"
-		Icon="/media/icon.ico">
-    <StackPanel Orientation="Vertical">
+		DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="{x:Static props:Resources.strMainWindowTitle}" Height="350" Width="630"
+		SizeToContent="Width"
+		Icon="/media/icon.ico" Closing="WindowClosing">
+	<Window.Resources>
+		<!-- This style makes things visible only when the trainer is attached to the game. -->
+		<Style x:Key="styleVisibleWhenAttached" TargetType="FrameworkElement">
+			<Setter Property="Visibility" Value="Hidden" />
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding Path=GameMemoryIO.Attached}" Value="True">
+					<Setter Property="Visibility" Value="Visible" />
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+	</Window.Resources>
+	<StackPanel Orientation="Vertical">
+		<GroupBox Header="{x:Static props:Resources.strGroupBoxHeaderGameInfo}" Margin="3">
+			<Grid>
+				<!-- Rows and columns definitions -->
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto" />
+					<RowDefinition Height="auto" />
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="auto" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+
+				<Label Grid.Row="0" Grid.Column="0" Content="{x:Static props:Resources.strLblGamesProcessPrompt}" FontWeight="Bold" HorizontalAlignment="Right" Margin="3" />
+				<DockPanel Grid.Row="0" Grid.Column="1" LastChildFill="False" VerticalAlignment="Center" MinWidth="170" Margin="3">
+					<Label DockPanel.Dock="Left" Margin="0" Padding="0">
+						<Label.Style>
+							<Style TargetType="Label">
+								<Setter Property="Content" Value="{x:Static props:Resources.strLblNotAttached}" />
+								<Style.Triggers>
+									<DataTrigger Binding="{Binding Path=GameMemoryIO.Attached}" Value="True">
+										<Setter Property="Content" Value="{Binding Path=GameMemoryIO.TargetProcess.MainModule.ModuleName}" />
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</Label.Style>
+					</Label>
+					<Label DockPanel.Dock="Left" Style="{StaticResource styleVisibleWhenAttached}" Content="(" Margin="0" Padding="3,0,0,0" />
+					<Label DockPanel.Dock="Left" Style="{StaticResource styleVisibleWhenAttached}" Content="{x:Static props:Resources.strLblProcessIDPrompt}" Margin="0" Padding="0" />
+					<Label DockPanel.Dock="Left" Style="{StaticResource styleVisibleWhenAttached}" Content="{Binding Path=GameMemoryIO.TargetProcess.Id,FallbackValue={x:Static props:Resources.strNoneTag}}" Margin="0" Padding="3,0,0,0" />
+					<Label DockPanel.Dock="Left" Style="{StaticResource styleVisibleWhenAttached}" Content=")" Margin="0" Padding="0" />
+				</DockPanel>
+
+
+				<Label Grid.Row="1" Grid.Column="0" Content="{x:Static props:Resources.strLblRequiredGameVersionPrompt}" FontWeight="Bold" HorizontalAlignment="Right" Margin="3" />
+				<Label Grid.Row="1" Grid.Column="1" Content="{x:Static props:Resources.strLblRequiredGameVersionValue}" HorizontalAlignment="Left" Margin="3" />
+			</Grid>
+		</GroupBox>
+		<GroupBox Header="{x:Static props:Resources.strGroupBoxHeaderCheats}" Margin="3" Padding="3" FontWeight="Bold">
+			<StackPanel Orientation="Vertical">
+				<StackPanel.Resources>
+					<Style TargetType="Label">
+						<Setter Property="FontWeight" Value="Normal" />
+						<Setter Property="FontStyle" Value="Italic" />
+						<Setter Property="VerticalAlignment" Value="Center" />
+						<Setter Property="VerticalContentAlignment" Value="Center" />
+						<Setter Property="Padding" Value="3,0,0,0" />
+						<Setter Property="Margin" Value="0" />
+					</Style>
+					<Style TargetType="CheckBox">
+						<Setter Property="FontWeight" Value="{x:Static FontWeights.Bold}" />
+						<Setter Property="VerticalAlignment" Value="Center" />
+						<Setter Property="VerticalContentAlignment" Value="Center" />
+						<Setter Property="Padding" Value="0" />
+						<Setter Property="Margin" Value="0" />
+					</Style>
+				</StackPanel.Resources>
+				<StackPanel Orientation="Horizontal">
+					<CheckBox Checked="CheckBoxCheatToggled" Unchecked="CheckBoxCheatToggled" Content="{x:Static props:Resources.strChkCheatPromptHPHack}" Tag="{x:Static local:ECheat.evCheatHPHack}" />
+					<Label Content="{x:Static props:Resources.strChkCheatDescriptionHPHack}" Margin="3" />
+				</StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<CheckBox Checked="CheckBoxCheatToggled" Unchecked="CheckBoxCheatToggled" Content="{x:Static props:Resources.strChkCheatPromptManaHack}" Tag="{x:Static local:ECheat.evCheatManaHack}" />
+					<Label Content="{x:Static props:Resources.strChkCheatDescriptionManaHack}" Margin="3" />
+				</StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<CheckBox Checked="CheckBoxCheatToggled" Unchecked="CheckBoxCheatToggled" Content="{x:Static props:Resources.strChkCheatPromptOneHitKillsHack}" Tag="{x:Static local:ECheat.evCheatOneHitKillsHack}" />
+					<Label Content="{x:Static props:Resources.strChkCheatDescriptionOneHitKillsHack}" Margin="3" />
+				</StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<CheckBox Checked="CheckBoxCheatToggled" Unchecked="CheckBoxCheatToggled" Content="{x:Static props:Resources.strChkCheatPromptSkillPointsHack}" Tag="{x:Static local:ECheat.evCheatSkillPointsHack}" />
+					<Label Content="{x:Static props:Resources.strChkCheatDescriptionSkillPointsHack}" Margin="3" />
+				</StackPanel>
+			</StackPanel>
+		</GroupBox>
 		<GroupBox Header="{x:Static props:Resources.strGroupBoxHeaderSupport}" Margin="3" FontWeight="Bold">
 			<StackPanel Orientation="Horizontal">
 				<Button Width="50" Height="50" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Padding="2" Margin="3,3,10,3" UseLayoutRounding="False" Click="ButtonClickDonate">

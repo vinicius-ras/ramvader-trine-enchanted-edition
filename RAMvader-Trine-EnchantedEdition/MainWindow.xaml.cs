@@ -16,8 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with RAMvader-Trine-EnchantedEdition.  If not, see <http://www.gnu.org/licenses/>.
  */
+using RAMvader;
+using RAMvader.CodeInjection;
+using System;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace RAMvader_Trine_EnchantedEdition
 {
@@ -31,8 +38,107 @@ namespace RAMvader_Trine_EnchantedEdition
 		private const string GAME_PROCESS_NAME = "trine1_32bit";
 		/// <summary>The URL which points to the webpage that runs when the user clicks the "Donate!" button of the trainer.</summary>
 		private const string PROJECT_DONATION_URL = "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=WJ2D2KRMPRKBS&lc=US&item_name=Supporting%20Vinicius%2eRAS%27%20open%20source%20projects&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted";
+		/// <summary>The period of the timer used to look for the game's process, when the trainer is not attached. This number is given in miliseconds.</summary>
+		private const int TIMER_LOOK_FOR_GAME_PROCESS_PERIOD_MS = 1000;
 		#endregion
 
+
+
+
+
+		#region PRIVATE FIELDS
+		/// <summary>A Timer object used to periodically look for the game's process, when the trainer is not attached to the game.</summary>
+		private Timer m_gameSearchTimer = null;
+		#endregion
+
+
+
+
+
+		#region PUBLIC PROPERTIES
+		/// <summary>An object used for performing I/O operations on the game process' memory. </summary>
+		public RAMvaderTarget GameMemoryIO { get; private set; }
+		/// <summary>An object used for injecting and managing code caves and arbitrary variables into the
+		/// game process' memory.</summary>
+		public Injector<ECheat, ECodeCave, EVariable> GameMemoryInjector { get; private set; }
+		#endregion
+
+
+
+
+
+		#region PRIVATE METHODS
+		/// <summary>Starts a timer which is responsible for periodically looking for the game's process.</summary>
+		private void StartLookingForGameProcess()
+		{
+			// Define the callback function to be used for the timer 
+			TimerCallback timerCallback = ( object state ) => {
+				// Force timer's task to be executed in the SAME THREAD as the MainWindow
+				this.Dispatcher.Invoke( () => {
+					// This flag controls whether the timer used for looking for the game's process should be restarted or not
+					bool bRestartLookForGameTimer = true;
+
+					// Try to find the game's process
+					Process gameProcess = Process.GetProcessesByName( GAME_PROCESS_NAME ).FirstOrDefault();
+					if ( gameProcess != null )
+					{
+						// Try to attach to the game's process
+						if ( GameMemoryIO.AttachToProcess( gameProcess ) )
+						{
+							// Inject the trainer's code and variables into the game's memory!
+							GameMemoryInjector.Inject();
+
+							// When the game's process exits, the MainWindow's dispatcher is used to invoke the DetachFromGame() method
+							// in the same thread which "runs" our MainWindow
+							GameMemoryIO.TargetProcess.EnableRaisingEvents = true;
+							GameMemoryIO.TargetProcess.Exited += ( caller, args ) => {
+								this.Dispatcher.Invoke( () => { this.DetachFromGame(); } );
+							};
+
+							// The timer which looks for the game shouldn't be restarted, as the game has already been found
+							bRestartLookForGameTimer = false;
+						}
+						else
+						{
+							MessageBox.Show( this,
+								Properties.Resources.strMsgFailedToAttach, Properties.Resources.strMsgFailedToAttachCaption,
+								MessageBoxButton.OK, MessageBoxImage.Exclamation );
+						}
+					}
+
+					// RESTART the timer as a ONE-SHOT timer
+					if ( bRestartLookForGameTimer )
+						m_gameSearchTimer.Change( TIMER_LOOK_FOR_GAME_PROCESS_PERIOD_MS, Timeout.Infinite );
+				} );
+			};
+
+			// Start the timer as a ONE-SHOT timer
+			m_gameSearchTimer = new Timer( timerCallback, null, TIMER_LOOK_FOR_GAME_PROCESS_PERIOD_MS, Timeout.Infinite );
+		}
+
+
+		/// <summary>Called when the trainer needs to be detached from the game's process.</summary>
+		private void DetachFromGame()
+		{
+			// Detach from the target process
+			if ( GameMemoryIO.IsAttached() )
+			{
+				// If the game's process is still running, all cheats must be disabled
+				if ( GameMemoryIO.TargetProcess.HasExited == false )
+				{
+					foreach ( ECheat curCheat in Enum.GetValues( typeof( ECheat ) ) )
+						GameMemoryInjector.SetMemoryAlterationsActive( curCheat, false );
+				}
+
+				// Release injected memory, cleanup and detach
+				GameMemoryInjector.ResetAllocatedMemoryData();
+				GameMemoryIO.DetachFromProcess();
+			}
+
+			// Restart the timer which looks for the game's process
+			StartLookingForGameProcess();
+		}
+		#endregion
 
 
 
@@ -41,9 +147,43 @@ namespace RAMvader_Trine_EnchantedEdition
 		/// <summary>Constructor.</summary>
 		public MainWindow()
 		{
+			// Initialize objects which will perform operations on the game's memory
+			GameMemoryIO = new RAMvaderTarget();
+
+			GameMemoryInjector = new Injector<ECheat, ECodeCave, EVariable>();
+			GameMemoryInjector.SetTargetProcess( GameMemoryIO );
+
+			// Initialize RAMvaderTarget
+			GameMemoryIO.SetTargetEndianness( EEndianness.evEndiannessLittle );
+			GameMemoryIO.SetTargetPointerSize( EPointerSize.evPointerSize32 );
+
+			// Initialize window
 			InitializeComponent();
+
+			// Start looking for the game!
+			StartLookingForGameProcess();
 		}
 		#endregion
+
+
+
+
+
+		#region EVENT HANDLERS
+		/// <summary>Called when the #MainWindow of the trainer is about to be closed (but before actually closing it).</summary>
+		/// <param name="sender">Object which sent the event.</param>
+		/// <param name="e">Arguments from the event.</param>
+		private void WindowClosing( object sender, CancelEventArgs e )
+		{
+			// Stop the timer which looks for the game's process, if it is running
+			if ( m_gameSearchTimer != null )
+				m_gameSearchTimer.Change( Timeout.Infinite, Timeout.Infinite );
+
+			// Detach the trainer, if it is attached
+			if ( GameMemoryIO.Attached )
+				DetachFromGame();
+		}
+
 
 		/// <summary>
 		/// Called when the user clicks the "Donate!" button.
@@ -54,5 +194,19 @@ namespace RAMvader_Trine_EnchantedEdition
 		{
 			Process.Start( PROJECT_DONATION_URL );
 		}
+
+
+
+
+
+		/// <summary>
+		/// Called whenever any of the CheckBoxes used to activate/deactivate cheats from the trainer gets checked or unchecked.
+		/// </summary>
+		/// <param name="sender">Object which sent the event.</param>
+		/// <param name="e">Arguments from the event.</param>
+		private void CheckBoxCheatToggled( object sender, RoutedEventArgs e )
+		{
+		}
+		#endregion
 	}
 }
