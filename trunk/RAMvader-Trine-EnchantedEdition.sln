@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RAMvader-Trine-EnchantedEdition", "RAMvader-Trine-EnchantedEdition\RAMvader-Trine-EnchantedEdition.csproj", "{59B4D208-A308-478F-B931-0F1E4D2E0212}"
 EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SetupMSI", "SetupMSI\SetupMSI.wixproj", "{237095D7-4EDB-4EB0-9AE1-69905DE860FE}"
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SetupBundle", "SetupBundle\SetupBundle.wixproj", "{1A4B6E4C-9693-4FFB-9AC2-6595172C3FA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -15,6 +19,14 @@ Global
 		{59B4D208-A308-478F-B931-0F1E4D2E0212}.Debug|x86.Build.0 = Debug|x86
 		{59B4D208-A308-478F-B931-0F1E4D2E0212}.Release|x86.ActiveCfg = Release|x86
 		{59B4D208-A308-478F-B931-0F1E4D2E0212}.Release|x86.Build.0 = Release|x86
+		{237095D7-4EDB-4EB0-9AE1-69905DE860FE}.Debug|x86.ActiveCfg = Debug|x86
+		{237095D7-4EDB-4EB0-9AE1-69905DE860FE}.Debug|x86.Build.0 = Debug|x86
+		{237095D7-4EDB-4EB0-9AE1-69905DE860FE}.Release|x86.ActiveCfg = Release|x86
+		{237095D7-4EDB-4EB0-9AE1-69905DE860FE}.Release|x86.Build.0 = Release|x86
+		{1A4B6E4C-9693-4FFB-9AC2-6595172C3FA1}.Debug|x86.ActiveCfg = Debug|x86
+		{1A4B6E4C-9693-4FFB-9AC2-6595172C3FA1}.Debug|x86.Build.0 = Debug|x86
+		{1A4B6E4C-9693-4FFB-9AC2-6595172C3FA1}.Release|x86.ActiveCfg = Release|x86
+		{1A4B6E4C-9693-4FFB-9AC2-6595172C3FA1}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
