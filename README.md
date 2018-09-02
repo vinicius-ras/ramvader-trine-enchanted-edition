@@ -5,3 +5,10 @@ RAMvader-Trine-EnchantedEdition uses the RAMvader library to have access to most
 
 Please click the image below to see the project's video for a demonstration of the 'hacks' provided by the trainer:<br />
 [![RAMvader-Trine-EnchantedEdition demonstration](https://vinicius-ras.github.io/ramvader-trine-enchanted-edition/VideoScreenshot.jpg)](https://youtu.be/qq-8qw3K0lU "RAMvader-Trine-EnchantedEdition demonstration")
+
+This trainer has been tested on **Trine (Enchanted Edition), v2.12, Build 510** from Steam.
+
+## Available cheats ##
+* **HP Hack:** player's HP does not decrease when taking hits from enemies.
+* **Mana hack:** player's mana does not decrease while using powers and special moves.
+* **Infinite skill points:** have infinite Skill Points to use in the Skills menu.
